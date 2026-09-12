@@ -1,0 +1,151 @@
+<div align="center">
+
+# 📦 BharatFlow AI (भारतफ्लो एआई)
+### स्वायत्त फ्रेट अपवाद एवं मूल-कारण विश्लेषण प्लेटफ़ॉर्म
+
+**सांख्यिकीय विसंगति पहचान (Deterministic Statistical Detection) • स्वायत्त बहु-उपकरण तार्किक विश्लेषण • एसएलए-जोखिम प्राथमिकता**
+
+[ **English**](./README.md) · [ **हिन्दी (Hindi)** ] · [ **Español (Spanish)**](./README_ES.md) · [ **简体中文 (Chinese)**](./README_ZH.md)
+
+<br/>
+
+[![Live Production Demo](https://img.shields.io/badge/Live%20Demo-bharatflow--ai-00b894?style=for-the-badge&logo=render&logoColor=white)](https://bharatflow-ai-nvbz.onrender.com)
+[![GitHub Stars](https://img.shields.io/github/stars/az-cod/Bharatflow-AI?style=for-the-badge&logo=github)](https://github.com/az-cod/Bharatflow-AI)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Architecture](https://img.shields.io/badge/Architecture-Event--Driven%20%7C%20REST-orange?style=for-the-badge)](https://bharatflow-ai-nvbz.onrender.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
+</div>
+
+---
+
+## 🌐 भाषा चयन / Language Selection
+
+| भाषा (Language) | दस्तावेज़ (Document) | विवरण (Description) |
+|---|---|---|
+| **English** | [**README.md**](./README.md) | मूल अंग्रेज़ी तकनीकी दस्तावेज़ एवं आर्किटेक्चर गाइड। |
+| **हिन्दी (Hindi)** | [**README_HI.md**](./README_HI.md) | संपूर्ण हिन्दी तकनीकी विवरण एवं मार्गदर्शिका। |
+| **Español** | [**README_ES.md**](./README_ES.md) | Documentación técnica en Español. |
+| **简体中文** | [**README_ZH.md**](./README_ZH.md) | 官方简体中文技术文档。 |
+
+---
+
+## 📖 परिचय (Overview)
+
+**BharatFlow AI** एक उद्यम-स्तरीय स्वायत्त एआई लॉजिस्टिक्स ऑपरेशंस प्लेटफ़ॉर्म है, जिसे प्रमुख भारतीय मालवहन गलियारों (दिल्ली, मुंबई, पुणे, बेंगलुरु, हैदराबाद, अहमदाबाद और जयपुर) में शिपमेंट देरी और अपवादों के मूल कारणों की त्वरित पहचान हेतु डिज़ाइन किया गया है।
+
+पारंपरिक लॉजिस्टिक्स में आने वाली **अलर्ट थकान (Alert Fatigue)** और धीमी प्रतिक्रिया समय की समस्या को हल करने के लिए, भारतफ्लो एआई तीव्र सांख्यिकीय गणना ($Z\text{-score}$) और एक स्वायत्त एलएलएम एजेंट (`qwen/qwen3.8-27b`) को जोड़ता है। यह सामान्य शिपमेंट को बिना किसी अतिरिक्त लागत के मिलीसेकंड में फ़िल्टर करता है और केवल असामान्य शिपमेंट पर मौसम, हब-भीड़ और ई-वे बिल अनुपालन की लाइव जांच कर सटीक रिपोर्ट तैयार करता है।
+
+> **शून्य लागत संरचना (Zero-Cost Constraint)**: यह परियोजना बिना किसी मॉडल प्रशिक्षण और बिना किसी सशुल्क एपीआई (Zero Paid APIs) के पूर्णतः निःशुल्क उपकरणों पर बनाई गई है।
+
+---
+
+## 🚀 लाइव प्रोडक्शन डेमो (Live Demo)
+
+- **वैश्विक वेब एप्लिकेशन**: [https://bharatflow-ai-nvbz.onrender.com](https://bharatflow-ai-nvbz.onrender.com)
+- **एपीआई स्थिति (Healthcheck)**: [https://bharatflow-ai-nvbz.onrender.com/api/status](https://bharatflow-ai-nvbz.onrender.com/api/status)
+
+---
+
+## 🏗️ सिस्टम आर्किटेक्चर (Pipeline Architecture)
+
+```
+                    ┌───────────────────────────────────┐
+                    │     सिम्युलेटेड टेलीमेट्री स्ट्रीम   │
+                    │   (GPS, ड्वेल टाइम, ट्रांज़िट स्टॉप्स)│
+                    └─────────────────┬─────────────────┘
+                                      │
+                                      ▼
+                    ┌───────────────────────────────────┐
+                    │  सांख्यिकीय विसंगति पहचान (Stats)  │
+                    │   (Z-Score > 2.0σ बनाम बेसलाइन)   │
+                    └───────┬───────────────────┬───────┘
+                            │                   │
+                 [सामान्य प्रवाह (< 2σ)]         │ [चिह्नित अपवाद (> 2σ)]
+                            │                   ▼
+                            ▼       ┌───────────────────────────────────┐
+                    ┌───────────────┤ स्वायत्त बहु-उपकरण एजेंट (Agent)   │
+                    │ त्वरित मंज़ूरी │ • get_weather (लाइव मौसम)        │
+                    │ (शून्य LLM व्यय)│ • get_hub_congestion (हब स्थिति) │
+                    └───────────────┤ • get_compliance_status (ई-वे बिल)│
+                                    └─────────────────┬─────────────────┘
+                                                      │
+                                                      ▼
+                                    ┌───────────────────────────────────┐
+                                    │ पारदर्शी स्कोरिंग इंजन           │
+                                    │ • आत्मविश्वास सूत्र (Confidence)   │
+                                    │ • प्राथमिकता स्कोर: मूल्य × विलंब² │
+                                    └─────────────────┬─────────────────┘
+                                                      │
+                                                      ▼
+                                    ┌───────────────────────────────────┐
+                                    │ संरचित निदान एवं ऑडिट लॉग         │
+                                    │ (कारण, सुझाई गई कार्रवाई, SQLite) │
+                                    └───────────────────────────────────┘
+```
+
+---
+
+## ⚙️ मुख्य तकनीकी विशेषताएँ (Key Highlights)
+
+### 1. सांख्यिकीय फ़िल्टरिंग (Deterministic Detection)
+लॉजिस्टिक्स का 80% से अधिक डेटा सामान्य होता है। एलएलएम को लगातार कॉल करने के बजाय, प्रत्येक शिपमेंट की जांच $Z$-स्कोर सूत्र ($Z = \frac{x - \mu}{\sigma}$) से होती है। केवल $2.0\sigma$ से अधिक विचलन वाले शिपमेंट ही एआई एजेंट के पास जाते हैं, जिससे समय और एपीआई लागत दोनों बचती हैं।
+
+### 2. स्वायत्त बहु-उपकरण अन्वेषण (Multi-Tool Investigation)
+अपवाद पाए जाने पर एआई एजेंट वास्तविक समय में निम्नलिखित टूल्स को एक साथ कॉल करता है:
+- `get_weather`: ओपन-मेटियो (Open-Meteo) एपीआई के ज़रिए लाइव बारिश, तूफान व हवा की गति की जांच।
+- `get_hub_congestion`: लॉजिस्टिक्स यार्ड में भीड़ और डॉक टर्नअराउंड समय।
+- `get_compliance_status`: जीएसटी एवं ई-वे बिल की वैधता।
+
+### 3. समानांतर बेंचमार्क लैब (Concurrent Benchmark Harness)
+[`evaluation.py`](./evaluation.py) के माध्यम से एक मानकीकृत मूल्यांकन प्रणाली शामिल है, जो `ThreadPoolExecutor` के साथ मात्र 12 सेकंड में **100% Top-1 सटीकता (Accuracy)** सिद्ध करती है।
+
+### 4. डीएचएल (DHL) डिज़ाइन सिस्टम एवं शुद्ध एसवीजी (SVG) आइकन्स
+इंटरफ़ेस 60-30-10 रंग नियम पर आधारित है:
+- **60% न्यूट्रल कैनवास**: वाइट (`#FFFFFF`) एवं लाइट ग्रे (`#F4F4F4`)।
+- **30% संरचना**: डार्क स्लेट ग्रे (`#242832`) नेविगेशन बार।
+- **10% ब्रांड एक्सेंट**: डीएचएल रेड (`#D40511`) प्राथमिक बटन एवं डीएचएल येलो (`#FFCC00`) एक्टिव हाइलाइट्स।
+- **शून्य इमोजी**: संपूर्ण यूआई में केवल पेशेवर कस्टम एसवीजी आइकन्स का उपयोग किया गया है।
+
+---
+
+## 📡 REST API विवरण
+
+| विधि (Method) | एंडपॉइंट (Endpoint) | विवरण (Description) |
+|---|---|---|
+| `GET` | `/api/status` | सिस्टम स्थिति, मॉडल विवरण और हब निर्देशांक। |
+| `GET` | `/api/shipments` | सभी सक्रिय शिपमेंट्स और उनके Z-स्कोर की सूची। |
+| `POST` | `/api/generate` | भारतीय कॉरिडोर पर नया सिम्युलेटेड टेलीमेट्री डेटा उत्पन्न करें। |
+| `POST` | `/api/investigate` | किसी शिपमेंट पर एआई स्वायत्त जांच प्रारंभ करें। |
+| `POST` | `/api/evaluate` | हिडन ग्राउंड-ट्रुथ के विरुद्ध बेंचमार्क टेस्ट रन करें। |
+| `GET` | `/api/audit` | पूर्व में लिए गए सभी निर्णयों का अपरिवर्तनीय ऑडिट लॉग। |
+
+---
+
+## 🛠️ स्थानीय इंस्टॉलेशन (Local Setup)
+
+```bash
+# 1. रिपॉजिटरी क्लोन करें
+git clone https://github.com/az-cod/Bharatflow-AI.git
+cd Bharatflow-AI
+
+# 2. वर्चुअल वातावरण बनाएं एवं एक्टिवेट करें
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+# Linux/macOS:
+source venv/bin/activate
+
+# 3. निर्भरताएँ इंस्टॉल करें
+pip install -r requirements.txt
+
+# 4. एप्लिकेशन चलाएं
+python server.py 8000
+# ब्राउज़र में खोलें: http://localhost:8000
+```
+
+---
+
+## 📄 लाइसेंस (License)
+
+यह प्रोजेक्ट [MIT License](./LICENSE) के अंतर्गत ओपन-सोर्स है।
