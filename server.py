@@ -1,18 +1,3 @@
-"""
-server.py
----------
-Lightweight, zero-dependency REST & static file server for the recreated
-BharatFlow AI Web Application.
-
-Exposes the exact, unchanged project pipeline logic:
-- data_generator.py (HUBS, ROUTES, generate_shipment, generate_batch)
-- detection.py (evaluate_shipment)
-- scoring.py (compute_priority_score)
-- agent.py (run_investigation)
-- evaluation.py (run_evaluation)
-- audit.py (log_investigation, fetch_log, clear_log)
-"""
-
 import json
 import mimetypes
 import os
@@ -20,7 +5,6 @@ import sys
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 
-# Import existing core domain logic
 from data_generator import HUBS, ROUTES, generate_shipment
 from detection import evaluate_shipment
 from scoring import compute_priority_score
@@ -28,11 +12,9 @@ from agent import run_investigation, MODEL_NAME
 from evaluation import run_evaluation
 import audit
 
-# In-memory session state (mirrors Streamlit session_state)
 session_shipments = []
 session_diagnoses = {}
 
-# Ensure default shipments on server startup so the board is ready immediately
 if not session_shipments:
     for _ in range(6):
         session_shipments.append(generate_shipment(exception_prob=0.4))
@@ -64,7 +46,6 @@ def get_shipment_rows():
             "investigated": has_diag,
             "diagnosis": diag,
         })
-    # Sort flagged first, then by priority score descending
     rows.sort(key=lambda r: (r["is_flagged"], r["priority_score"]), reverse=True)
     return rows
 
@@ -115,12 +96,10 @@ class BharatFlowHandler(BaseHTTPRequestHandler):
             logs = audit.fetch_log(limit=150)
             return self._send_json({"logs": logs})
 
-        # Static file serving from ./web/
         web_dir = os.path.join(os.path.dirname(__file__), "web")
         req_path = path.lstrip("/") or "index.html"
         file_path = os.path.abspath(os.path.join(web_dir, req_path))
 
-        # Prevent directory traversal
         if not file_path.startswith(web_dir) or not os.path.exists(file_path) or os.path.isdir(file_path):
             file_path = os.path.join(web_dir, "index.html")
 
@@ -204,7 +183,6 @@ class BharatFlowHandler(BaseHTTPRequestHandler):
         elif path == "/api/evaluate":
             try:
                 n_eval = int(payload.get("count", 5))
-                # Clamp between 3 and 10 to ensure fast response and prevent Groq RPM rate-limiting
                 n_eval = max(3, min(n_eval, 10))
                 results = run_evaluation(n_shipments=n_eval)
                 return self._send_json(results)

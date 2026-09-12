@@ -1,16 +1,3 @@
-"""
-app.py
-------
-BharatFlow AI - Shipment Exception & Root-Cause Intelligence (Modernized Streamlit Edition)
-
-Zero-cost stack: Streamlit Community Cloud (hosting) + Groq free-tier API
-(Qwen / Llama open-weight models, no training, no cost) + Open-Meteo (free live
-weather) + simulated compliance/congestion signals (documented integration
-points for a real deployment).
-
-100% SVG Icons, Zero Emojis.
-"""
-
 import os
 import pandas as pd
 import plotly.express as px
@@ -22,10 +9,6 @@ from scoring import compute_priority_score
 from agent import run_investigation, MODEL_NAME
 from evaluation import run_evaluation
 import audit
-
-# ---------------------------------------------------------------------------
-# Setup & Secrets
-# ---------------------------------------------------------------------------
 
 st.set_page_config(page_title="BharatFlow AI — Logistics Intelligence", layout="wide")
 
@@ -42,7 +25,6 @@ if "shipments" not in st.session_state:
 if "diagnoses" not in st.session_state:
     st.session_state.diagnoses = {}
 
-# Custom Industrial CSS & SVG Injections (No Emojis) — DHL Balanced Palette
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
@@ -137,10 +119,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------------------------------------------------------------------
-# Sidebar
-# ---------------------------------------------------------------------------
-
 st.sidebar.markdown("""
 <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -177,15 +155,10 @@ st.sidebar.markdown(
     "Open-Meteo (live) · zero training, zero paid APIs."
 )
 
-# ---------------------------------------------------------------------------
-# Tabs (Strictly Text Labels & SVG Badges — Zero Emojis)
-# ---------------------------------------------------------------------------
-
 tab_board, tab_investigate, tab_eval, tab_audit, tab_about = st.tabs(
     ["Live Board", "Investigate", "Evaluation", "Audit Log", "About"]
 )
 
-# --- Live Board -------------------------------------------------------------
 with tab_board:
     st.subheader("Active shipments")
 
@@ -223,7 +196,6 @@ with tab_board:
         fig.update_layout(mapbox_style="open-street-map", margin=dict(l=0, r=0, t=0, b=0))
         st.plotly_chart(fig, use_container_width=True)
 
-# --- Investigate --------------------------------------------------------
 with tab_investigate:
     st.subheader("Investigate a flagged shipment")
 
@@ -281,7 +253,6 @@ with tab_investigate:
             with st.expander("Tool call evidence trace (for auditability)"):
                 st.json(d.get("evidence", {}))
 
-# --- Evaluation ----------------------------------------------------------
 with tab_eval:
     st.subheader("Agent accuracy evaluation")
     st.caption(
@@ -297,7 +268,6 @@ with tab_eval:
         st.caption(f"{results['n_flagged']} of {results['n_generated']} simulated shipments were flagged as exceptions.")
         st.dataframe(pd.DataFrame(results["details"]), use_container_width=True, hide_index=True)
 
-# --- Audit Log -------------------------------------------------------------
 with tab_audit:
     st.subheader("Investigation audit log")
     st.caption("Every agent investigation is logged here with its diagnosis and confidence — "
@@ -311,7 +281,6 @@ with tab_audit:
         audit.clear_log()
         st.rerun()
 
-# --- About -----------------------------------------------------------------
 with tab_about:
     st.markdown("""
 ## BharatFlow AI — Shipment Exception & Root-Cause Intelligence

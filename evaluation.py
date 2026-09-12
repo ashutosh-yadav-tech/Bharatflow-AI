@@ -1,14 +1,3 @@
-"""
-evaluation.py
--------------
-Addresses the gap flagged in the design review: a system whose value
-proposition is "trustworthy explanation" needs a real accuracy number, not
-just plausible-looking demo output. This runs the actual pipeline
-(detection -> agent -> diagnosis) against simulated shipments where the
-true cause is known but withheld from the agent, in 'eval' mode (simulated
-weather, so results are reproducible run to run for a given seed).
-"""
-
 from concurrent.futures import ThreadPoolExecutor
 from data_generator import generate_batch
 from detection import evaluate_shipment
@@ -38,7 +27,6 @@ def run_evaluation(n_shipments: int = 5, seed: int = 7) -> dict:
         if report["is_flagged"]:
             flagged.append((ship, report))
 
-    # Run evaluations concurrently to ensure snappy response and prevent HTTP timeouts
     max_workers = min(3, max(1, len(flagged))) if flagged else 1
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         results = list(executor.map(lambda pair: _eval_single(pair[0], pair[1]), flagged))

@@ -1,22 +1,3 @@
-"""
-tools.py
---------
-Three "tools" the agent can call while investigating a flagged shipment.
-
-get_weather_live -> a REAL network call to Open-Meteo (free, no API key).
-                     This is what makes the live demo genuinely live rather
-                     than fully canned.
-get_weather_simulated -> used only by the offline evaluation harness, so
-                     accuracy numbers are reproducible and not dependent on
-                     whatever the real weather happens to be right now.
-get_compliance_status / get_hub_congestion -> simulated system lookups.
-                     A real e-way bill / hub WMS API isn't publicly available
-                     for free, so these read the shipment's simulated system
-                     fields instead. This is called out explicitly in the
-                     README as the integration point a real deployment would
-                     replace.
-"""
-
 import requests
 from data_generator import HUBS
 

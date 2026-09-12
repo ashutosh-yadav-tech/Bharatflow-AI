@@ -1,31 +1,8 @@
-"""
-data_generator.py
-------------------
-Synthetic India logistics network (hubs, routes, baselines) and a shipment
-event generator.
-
-Design note (important): the generator does NOT create a 1:1 mapping between
-"true cause" and the signals tools will observe. This is deliberate — if the
-simulator always makes the weather tool loudly confirm a weather-caused delay,
-the agent isn't doing inference, it's doing lookup. Instead:
-  - ~15% of delays have NO clean single cause (genuine noise) — the agent
-    should be able to say "insufficient evidence for a confident root cause"
-    rather than confabulate one.
-  - ~20% of "true cause" delays have a MUTED signal (e.g. weather caused it,
-    but by the time the tool is queried conditions have improved) — the agent
-    has to weigh evidence, not just pattern-match on presence/absence.
-  - Some shipments have MULTIPLE contributing causes at once.
-"""
-
 import random
 import statistics
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Optional
-
-# ---------------------------------------------------------------------------
-# Network topology
-# ---------------------------------------------------------------------------
 
 HUBS = {
     "Delhi":     (28.6139, 77.2090),
@@ -52,15 +29,9 @@ ROUTES = {
 
 CAUSE_TAGS = ["weather", "compliance", "congestion"]
 
-# ---------------------------------------------------------------------------
-# Baselines (mean/std) per hub-dwell and per transit-hop, seeded for
-# reproducibility. These play the role of "historical data" a real system
-# would compute from months of scan events.
-# ---------------------------------------------------------------------------
-
 _rng = random.Random(42)
 
-HUB_DWELL_BASELINE = {}   # hub -> (mean_hours, std_hours)
+HUB_DWELL_BASELINE = {}
 for hub in HUBS:
     mean = _rng.uniform(3.0, 5.5)
     std = mean * 0.18
@@ -81,19 +52,16 @@ class Shipment:
     path: list
     created_at: datetime
     current_hub_index: int
-    dwell_hours: dict = field(default_factory=dict)   # hub -> actual dwell hrs
-    transit_hours: dict = field(default_factory=dict)  # (a,b) -> actual hrs
+    dwell_hours: dict = field(default_factory=dict)
+    transit_hours: dict = field(default_factory=dict)
     declared_value_inr: float = 0.0
     priority: str = "standard"
-    ground_truth_causes: list = field(default_factory=list)  # hidden, for eval only
+    ground_truth_causes: list = field(default_factory=list)
     state: str = "IN_TRANSIT"
 
-    # Simulated external-system readings (as if queried from real systems).
-    # These are generated WITH intentional noise/muting relative to
-    # ground_truth_causes so an agent can't just echo the tag back.
-    compliance_status: str = "cleared"       # cleared | pending | flagged
-    hub_congestion_pct: float = 0.0          # 0-100
-    weather_severity_sim: float = 0.0        # 0-1, used only in eval mode
+    compliance_status: str = "cleared"
+    hub_congestion_pct: float = 0.0
+    weather_severity_sim: float = 0.0
     weather_label_sim: str = "clear"
 
     @property
@@ -115,15 +83,10 @@ def _next_id() -> str:
 
 
 def generate_shipment(exception_prob: float = 0.35, rng: Optional[random.Random] = None) -> Shipment:
-    """Generate one shipment currently sitting at some hub along its route,
-    with realistic (imperfectly correlated) delay causes."""
     r = rng or random
     route_name = r.choice(list(ROUTES.keys()))
     path = ROUTES[route_name]
 
-    # shipment is somewhere between hub 0 (origin, already departed) and the
-    # second-to-last hub (still has a leg to go) — pick a hub index >=1 so it
-    # has at least one completed hop behind it
     current_idx = r.randint(1, len(path) - 1)
     current_hub = path[current_idx]
 
@@ -140,22 +103,19 @@ def generate_shipment(exception_prob: float = 0.35, rng: Optional[random.Random]
     is_exception = r.random() < exception_prob
     chosen_causes = []
     if is_exception:
-        n_causes = r.choices([0, 1, 2], weights=[15, 65, 20])[0]  # 0 = unexplained noise
+        n_causes = r.choices([0, 1, 2], weights=[15, 65, 20])[0]
         chosen_causes = r.sample(CAUSE_TAGS, k=n_causes) if n_causes > 0 else []
         ship.ground_truth_causes = chosen_causes
 
-    # fill dwell times for every hub visited so far (including current)
     for i in range(1, current_idx + 1):
         hub = path[i]
         mean, std = HUB_DWELL_BASELINE[hub]
         actual = r.gauss(mean, std)
         if is_exception and i == current_idx:
-            # inflate dwell at the CURRENT hub if an exception is active
             multiplier = r.uniform(2.0, 4.5)
             actual *= multiplier
         ship.dwell_hours[hub] = max(0.5, round(actual, 2))
 
-    # fill transit times for every hop completed so far
     for i in range(current_idx):
         a, b = path[i], path[i + 1]
         mean, std = HOP_TRANSIT_BASELINE[(a, b)]
@@ -166,16 +126,13 @@ def generate_shipment(exception_prob: float = 0.35, rng: Optional[random.Random]
 
     ship.state = "HUB_PROCESSING" if is_exception else "IN_TRANSIT"
 
-    # ---- simulated external-system signals (with muting/noise) ----
-    # Compliance
     if "compliance" in chosen_causes:
         ship.compliance_status = r.choices(
-            ["pending", "flagged", "cleared"], weights=[65, 15, 20]  # 20% muted
+            ["pending", "flagged", "cleared"], weights=[65, 15, 20]
         )[0]
     else:
         ship.compliance_status = r.choices(["cleared", "pending"], weights=[96, 4])[0]
 
-    # Hub congestion
     if "congestion" in chosen_causes:
         ship.hub_congestion_pct = round(
             r.uniform(80, 98) if r.random() > 0.20 else r.uniform(55, 75), 1
@@ -183,8 +140,6 @@ def generate_shipment(exception_prob: float = 0.35, rng: Optional[random.Random]
     else:
         ship.hub_congestion_pct = round(r.uniform(25, 65), 1)
 
-    # Weather severity (used only by the evaluation harness — the live app
-    # queries real Open-Meteo instead, see tools.py)
     if "weather" in chosen_causes:
         ship.weather_severity_sim = round(
             r.uniform(0.7, 1.0) if r.random() > 0.20 else r.uniform(0.2, 0.4), 2

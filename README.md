@@ -1,9 +1,9 @@
 <div align="center">
 
-# 📦 BharatFlow AI
+# BharatFlow AI
 ### Autonomous Freight Exception & Root-Cause Intelligence Platform
 
-**Deterministic Statistical Anomaly Detection • Agentic Multi-Tool Reasoning • SLA-Risk Prioritization**
+**Deterministic Statistical Anomaly Detection | Agentic Multi-Tool Reasoning | SLA-Risk Prioritization**
 
 [ **English** ] · [ **हिन्दी (Hindi)**](./README_HI.md) · [ **Español (Spanish)**](./README_ES.md) · [ **简体中文 (Chinese)**](./README_ZH.md)
 
@@ -19,7 +19,7 @@
 
 ---
 
-## 🌐 Language Navigation / भाषा विकल्प / Opciones de Idioma / 语言选项
+## Language Navigation / भाषा विकल्प / Opciones de Idioma / 语言选项
 
 | Language | Document | Description |
 |---|---|---|
@@ -30,24 +30,24 @@
 
 ---
 
-## 📖 Overview
+## Overview
 
-**BharatFlow AI** is an enterprise-grade agentic AI operations platform designed for freight exception handling and root-cause intelligence across high-volume Indian logistics corridors (Delhi, Mumbai, Bengaluru, Pune, Hyderabad, and Jaipur).
+BharatFlow AI is an enterprise-grade agentic AI operations platform designed for freight exception handling and root-cause intelligence across high-volume Indian logistics corridors including Delhi, Mumbai, Bengaluru, Pune, Hyderabad, and Jaipur.
 
-The platform solves the core operational vulnerability of modern logistics: **alert fatigue and slow exception triage**. By coupling cheap, deterministic statistical z-score detection with an autonomous LLM reasoning agent (`qwen/qwen3.8-27b`), BharatFlow AI triages thousands of nominal shipments at sub-millisecond speeds, while autonomously diagnosing anomalies using real-time atmospheric, telematics, and compliance signals.
+The platform resolves operational vulnerability in freight networks: alert fatigue and delayed exception triage. By coupling deterministic statistical z-score detection with an autonomous LLM reasoning agent (`qwen/qwen3.8-27b`), BharatFlow AI processes nominal shipments at sub-millisecond speeds, while autonomously diagnosing anomalies using real-time atmospheric, telematics, and compliance signals.
 
-> **Zero-Cost Constraint**: Engineered from the ground up with **zero model training** and **zero paid APIs**.
-
----
-
-## 🚀 Live Production Deployment
-
-- **Global Web Application**: [https://bharatflow-ai-nvbz.onrender.com](https://bharatflow-ai-nvbz.onrender.com)
-- **API Status Healthcheck**: [https://bharatflow-ai-nvbz.onrender.com/api/status](https://bharatflow-ai-nvbz.onrender.com/api/status)
+Zero-Cost Architecture: Built with zero model training requirements and zero paid APIs.
 
 ---
 
-## 🏗️ End-to-End Pipeline Architecture
+## Live Production Deployment
+
+- Global Web Application: https://bharatflow-ai-nvbz.onrender.com
+- API Status Healthcheck: https://bharatflow-ai-nvbz.onrender.com/api/status
+
+---
+
+## End-to-End Pipeline Architecture
 
 ```
                     ┌───────────────────────────────────┐
@@ -86,10 +86,10 @@ The platform solves the core operational vulnerability of modern logistics: **al
 
 ---
 
-## ⚙️ Key Architectural Highlights
+## Key Architectural Highlights
 
 ### 1. Deterministic Detection (Statistical Filtering)
-The LLM is **never in the high-frequency hot path**. Over 80% of logistics telemetry is nominal. Every shipment undergoes statistical z-score verification against rolling corridor baselines ($Z = \frac{x - \mu}{\sigma}$). Only deviations exceeding $2.0\sigma$ trigger agentic investigation, drastically slashing inference costs and eliminating latency spikes.
+The LLM is never in the high-frequency hot path. Over 80% of logistics telemetry is nominal. Every shipment undergoes statistical z-score verification against rolling corridor baselines ($Z = \frac{x - \mu}{\sigma}$). Only deviations exceeding $2.0\sigma$ trigger agentic investigation, drastically reducing inference costs and eliminating latency spikes.
 
 ### 2. Autonomous Multi-Tool Investigation
 When an anomaly is flagged, the agent dynamically interrogates external sensory tools in parallel:
@@ -98,18 +98,18 @@ When an anomaly is flagged, the agent dynamically interrogates external sensory 
 - `get_compliance_status`: E-way bill validity, GSTIN compliance, and verification checkpoints.
 
 ### 3. Concurrency-Engineered Benchmark Lab
-Includes a standardized evaluation harness ([`evaluation.py`](./evaluation.py)) validating agent accuracy against hidden ground-truth causes. Powered by a multi-threaded `ThreadPoolExecutor(max_workers=3)`, it achieves **100% Top-1 Attribution Accuracy** in ~12 seconds without triggering API rate limits.
+Includes a standardized evaluation harness ([`evaluation.py`](./evaluation.py)) validating agent accuracy against hidden ground-truth causes. Powered by a multi-threaded `ThreadPoolExecutor(max_workers=3)`, it achieves 100% Top-1 Attribution Accuracy in ~12 seconds without triggering API rate limits.
 
-### 4. Zero-Emoji, Enterprise DHL Design System
-The frontend ([`web/`](./web)) implements a professional design system adhering to the **60-30-10 Rule**:
-- **60% Neutral Canvas**: `#FFFFFF` main background with `#F4F4F4` elevated section separation.
-- **30% Structure & Headers**: `#242832` graphite slate sidebar with `#111111` typography.
-- **10% Brand Accents**: High-contrast DHL Red (`#D40511`) for primary calls to action, and DHL Yellow (`#FFCC00`) for active states.
-- **Pure SVG Icons**: 100% custom inline vector graphics with zero emojis.
+### 4. Zero-Emoji Enterprise DHL Design System
+The frontend ([`web/`](./web)) implements a professional design system adhering to the 60-30-10 Rule:
+- 60% Neutral Canvas: `#FFFFFF` main background with `#F4F4F4` elevated section separation.
+- 30% Structure & Headers: `#242832` graphite slate sidebar with `#111111` typography.
+- 10% Brand Accents: High-contrast DHL Red (`#D40511`) for primary calls to action, and DHL Yellow (`#FFCC00`) for active states.
+- Pure SVG Icons: 100% custom inline vector graphics with zero emojis.
 
 ---
 
-## 📊 Zero-Cost Tech Stack
+## Zero-Cost Tech Stack
 
 | Component | Technology | Cost / License |
 |---|---|---|
@@ -122,7 +122,7 @@ The frontend ([`web/`](./web)) implements a professional design system adhering 
 
 ---
 
-## 📡 REST API Documentation
+## REST API Documentation
 
 The backend exposes a lightweight, zero-dependency REST API:
 
@@ -138,7 +138,7 @@ The backend exposes a lightweight, zero-dependency REST API:
 
 ---
 
-## 🛠️ Local Development & Setup
+## Local Development & Setup
 
 ### Prerequisites
 - Python 3.10 or higher
@@ -151,60 +151,50 @@ cd Bharatflow-AI
 ```
 
 ### 2. Environment Configuration
-Create a virtual environment and install dependencies:
 ```bash
 python -m venv venv
-# On Windows:
 venv\Scripts\activate
-# On macOS/Linux:
-source venv/bin/activate
-
 pip install -r requirements.txt
 ```
 
 ### 3. API Key Setup (Optional for LLM Mode)
-Copy the secrets template:
 ```bash
 cp .streamlit/secrets.toml.example .streamlit/secrets.toml
 ```
-Add your free Groq API key from [console.groq.com](https://console.groq.com):
 ```toml
 GROQ_API_KEY = "gsk_your_groq_api_key_here"
 ```
-*(Note: If no API key is provided, the system seamlessly operates using its built-in rule-based fallback engine).*
 
 ### 4. Run the Application
 
-- **Modern Web Application (Recommended)**:
+- Modern Web Application:
   ```bash
   python server.py 8000
-  # Open in browser: http://localhost:8000
   ```
 
-- **Streamlit Interface**:
+- Streamlit Interface:
   ```bash
   streamlit run app.py
-  # Open in browser: http://localhost:8501
   ```
 
 ---
 
-## 🌐 Cloud Deployment Guide
+## Cloud Deployment Guide
 
-### Deploying to Render (1-Click)
-1. Fork or push this repository to your GitHub account.
-2. Go to [dashboard.render.com](https://dashboard.render.com) and click **New +** → **Web Service**.
-3. Select your repository.
-4. Render will automatically read [`render.yaml`](./render.yaml):
-   - **Environment**: Python 3
-   - **Plan**: Free ($0/month)
-   - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `python server.py`
-5. Add environment variable `GROQ_API_KEY` (optional).
-6. Click **Deploy Web Service**.
+### Deploying to Render
+1. Push this repository to your GitHub account.
+2. Navigate to dashboard.render.com and select New Web Service.
+3. Select the repository.
+4. Render automatically processes [`render.yaml`](./render.yaml):
+   - Environment: Python 3
+   - Plan: Free
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `python server.py`
+5. Optional environment variable: `GROQ_API_KEY`.
+6. Click Deploy Web Service.
 
 ---
 
-## 📄 License
+## License
 
 This project is open-source software licensed under the [MIT License](./LICENSE).

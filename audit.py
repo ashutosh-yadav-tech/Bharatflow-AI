@@ -1,14 +1,3 @@
-"""
-audit.py
---------
-Minimal append-style audit log. Uses a local SQLite file so it's zero-cost
-and needs no external DB service. Note (documented in README too): on
-Streamlit Community Cloud, local disk isn't guaranteed to persist across
-app restarts/sleeps - for a resume demo this is an acceptable, clearly
-stated limitation. Swapping in a free-tier hosted Postgres (e.g. Supabase)
-is a drop-in upgrade if persistence across restarts is required.
-"""
-
 import json
 import sqlite3
 from datetime import datetime

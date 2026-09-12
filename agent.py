@@ -1,16 +1,3 @@
-"""
-agent.py
---------
-Lightweight ReAct-style agent: given a flagged shipment, the LLM decides
-which tools to call (weather / compliance / congestion), sees the results,
-and must finish by calling submit_diagnosis with a structured output.
-
-Uses Groq's free-tier API serving open-weight Llama models - no training,
-no proprietary API, no cost. If no GROQ_API_KEY is configured (or the call
-fails for any reason, e.g. rate limit), falls back to a deterministic
-rule-based diagnosis so the demo never just crashes.
-"""
-
 import json
 import os
 
@@ -29,7 +16,6 @@ from tools import (
     get_hub_congestion,
 )
 
-# Ensure secrets are loaded if available in .streamlit/secrets.toml
 if not os.environ.get("GROQ_API_KEY"):
     try:
         import toml
@@ -82,8 +68,6 @@ def _dispatch_tool(name: str, ship, mode: str) -> dict:
 
 
 def _rule_based_fallback(ship, detection_report, mode: str) -> dict:
-    """Deterministic fallback used when no API key is set or the LLM call fails.
-    Runs the exact same tools, just skips the LLM's natural-language synthesis."""
     weather = get_weather_live(ship.current_hub) if mode == "live" else get_weather_simulated(ship)
     compliance = get_compliance_status(ship)
     congestion = get_hub_congestion(ship)
@@ -118,8 +102,6 @@ def _rule_based_fallback(ship, detection_report, mode: str) -> dict:
 
 
 def run_investigation(ship, detection_report, mode: str = "live") -> dict:
-    """mode: 'live' uses real Open-Meteo weather; 'eval' uses simulated weather
-    for reproducible evaluation runs."""
     api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
         return _rule_based_fallback(ship, detection_report, mode)
@@ -175,8 +157,6 @@ def run_investigation(ship, detection_report, mode: str = "live") -> dict:
                 break
 
         if diagnosis is None:
-            # model never called submit_diagnosis - fall back rather than
-            # surface a broken/empty result to the UI
             return _rule_based_fallback(ship, detection_report, mode)
 
         scores = {}

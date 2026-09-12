@@ -1,14 +1,6 @@
-"""
-detection.py
-------------
-Deterministic, rule/statistics-based exception detection. Deliberately NOT an
-LLM call — this stage must be fast, cheap, and auditable, since it runs on
-every shipment. The LLM only gets invoked for shipments this stage flags.
-"""
-
 from data_generator import Shipment, HUB_DWELL_BASELINE, HOP_TRANSIT_BASELINE
 
-Z_SCORE_FLAG_THRESHOLD = 2.0  # dwell/transit this many std devs above baseline -> flag
+Z_SCORE_FLAG_THRESHOLD = 2.0
 
 
 def zscore(actual: float, mean: float, std: float) -> float:
@@ -18,14 +10,12 @@ def zscore(actual: float, mean: float, std: float) -> float:
 
 
 def evaluate_shipment(ship: Shipment) -> dict:
-    """Return a structured detection report. Never calls out to an LLM."""
     hub = ship.current_hub
     mean, std = HUB_DWELL_BASELINE[hub]
     actual_dwell = ship.dwell_hours.get(hub, mean)
     dwell_z = zscore(actual_dwell, mean, std)
     dwell_deviation_pct = ((actual_dwell - mean) / mean) * 100 if mean else 0.0
 
-    # worst transit hop so far, if any
     worst_hop_z = 0.0
     worst_hop = None
     for (a, b), actual in ship.transit_hours.items():
