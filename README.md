@@ -1,5 +1,8 @@
 # BharatFlow AI — Shipment Exception & Root-Cause Intelligence
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-bharatflow--ai-00b894?style=for-the-badge&logo=render&logoColor=white)](https://bharatflow-ai-nvbz.onrender.com)
+[![GitHub stars](https://img.shields.io/github/stars/az-cod/Bharatflow-AI?style=for-the-badge)](https://github.com/az-cod/Bharatflow-AI)
+
 A live, working MVP of an agentic AI system for logistics exception handling,
 built around Indian shipment corridors (Delhi, Mumbai, Bengaluru, Jaipur, and
 others). Deterministic statistical exception detection feeds an LLM agent that
