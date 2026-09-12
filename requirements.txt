@@ -1,0 +1,6 @@
+streamlit>=1.38
+pandas>=2.2
+plotly>=5.22
+requests>=2.32
+openai>=1.40
+toml>=0.10

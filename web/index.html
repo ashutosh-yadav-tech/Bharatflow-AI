@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BharatFlow AI — Freight Exception & Root-Cause Intelligence</title>
+  <meta name="description" content="Industrial logistics operations control tower for statistical dwell exception detection, autonomous agentic root-cause diagnosis, and transparent SLA risk telemetry across Indian freight corridors.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Ambient operational backdrop glow -->
+  <div class="ambient-glow" id="ambient-glow" aria-hidden="true"></div>
+
+  <div class="app-layout">
+    <!-- Collapsible Industrial Sidebar -->
+    <aside class="sidebar" id="sidebar" aria-label="Main Navigation">
+      <div class="brand">
+        <div class="brand-icon">
+          <!-- Logistics Corridor Mesh SVG -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M16.5 9.4 7.55 4.24a1.78 1.78 0 0 0-2.5 1.55v12.42a1.78 1.78 0 0 0 2.5 1.55L16.5 14.6a1.78 1.78 0 0 0 0-3.2Z"></path>
+            <path d="m21 16-4.5-2.6"></path>
+            <path d="m21 8-4.5 2.6"></path>
+            <path d="M7.5 4.2 12 6.8"></path>
+            <path d="M7.5 19.8 12 17.2"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">BharatFlow AI</span>
+          <span class="brand-tag">Operations Tower</span>
+        </div>
+      </div>
+
+      <!-- Live Engine Telemetry Pill -->
+      <div class="engine-badge" id="engine-badge" role="status" aria-live="polite">
+        <div class="pulse-beacon" id="engine-pulse">
+          <span class="beacon-ring"></span>
+          <span class="beacon-dot"></span>
+        </div>
+        <div class="engine-info">
+          <span class="engine-state-label">Reasoning Engine</span>
+          <span class="engine-name" id="engine-name">Detecting...</span>
+        </div>
+      </div>
+
+      <!-- Main Navigation Menu -->
+      <nav class="nav-menu" role="tablist" aria-label="Dashboard Views">
+        <button class="nav-item active" data-tab="live-board" id="tab-btn-live-board" role="tab" aria-selected="true" aria-controls="pane-live-board">
+          <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="3" y1="9" x2="21" y2="9"></line>
+            <line x1="9" y1="21" x2="9" y2="9"></line>
+          </svg>
+          <span class="nav-label">Live Board</span>
+          <span class="badge-count" id="active-badge-count" aria-label="Active Shipments Count">0</span>
+        </button>
+
+        <button class="nav-item" data-tab="investigate" id="tab-btn-investigate" role="tab" aria-selected="false" aria-controls="pane-investigate">
+          <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <line x1="11" y1="8" x2="11" y2="14"></line>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+          </svg>
+          <span class="nav-label">Investigate</span>
+        </button>
+
+        <button class="nav-item" data-tab="evaluation" id="tab-btn-evaluation" role="tab" aria-selected="false" aria-controls="pane-evaluation">
+          <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 2v7.31"></path>
+            <path d="M14 9.3V2"></path>
+            <path d="M8.5 2h7"></path>
+            <path d="M14 9.3a6.5 6.5 0 1 1-4 0"></path>
+            <path d="M5.52 16h12.96"></path>
+          </svg>
+          <span class="nav-label">Evaluation Lab</span>
+        </button>
+
+        <button class="nav-item" data-tab="audit" id="tab-btn-audit" role="tab" aria-selected="false" aria-controls="pane-audit">
+          <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <polyline points="9 12 11 14 15 10"></polyline>
+          </svg>
+          <span class="nav-label">Audit Trail</span>
+        </button>
+
+        <button class="nav-item" data-tab="about" id="tab-btn-about" role="tab" aria-selected="false" aria-controls="pane-about">
+          <svg class="nav-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span class="nav-label">System Architecture</span>
+        </button>
+      </nav>
+
+      <!-- Telemetry Stream Controller -->
+      <div class="sidebar-section">
+        <div class="section-title">Stream Generator</div>
+        <div class="control-group">
+          <label for="gen-count-slider">
+            <span>Event Batch Size</span>
+            <span class="control-val" id="gen-count-val">5</span>
+          </label>
+          <input type="range" id="gen-count-slider" min="1" max="15" value="5" aria-label="Event batch size">
+        </div>
+
+        <div class="control-group">
+          <label for="exc-prob-slider">
+            <span>Anomaly Probability</span>
+            <span class="control-val" id="exc-prob-val">40%</span>
+          </label>
+          <input type="range" id="exc-prob-slider" min="0" max="1" step="0.05" value="0.4" aria-label="Anomaly probability">
+        </div>
+
+        <div class="btn-stack">
+          <button class="btn btn-primary" id="btn-generate-events">
+            <svg class="btn-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="1" y="3" width="15" height="13"></rect>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+              <circle cx="5.5" cy="18.5" r="2.5"></circle>
+              <circle cx="18.5" cy="18.5" r="2.5"></circle>
+            </svg>
+            <span>Ingest Telemetry</span>
+          </button>
+
+          <button class="btn btn-secondary" id="btn-clear-session">
+            <svg class="btn-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            <span>Purge Session</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sidebar Status Metadata -->
+      <div class="sidebar-footer">
+        <div class="infra-pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="m4.93 4.93 4.24 4.24"></path>
+            <path d="m14.83 9.17 4.24-4.24"></path>
+            <path d="m14.83 14.83 4.24 4.24"></path>
+            <path d="m9.17 14.83-4.24 4.24"></path>
+            <circle cx="12" cy="12" r="4"></circle>
+          </svg>
+          <span>India Corridor Mesh · Open-Meteo Live</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Operational Workspace -->
+    <main class="content-wrapper">
+      <!-- Top Operational Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <div class="header-meta-row">
+            <span class="live-dot" aria-hidden="true"></span>
+            <span class="header-status-text">NETWORK LIVE TELEMETRY</span>
+          </div>
+          <h1 class="page-title" id="page-title">Freight Operations Control Tower</h1>
+          <p class="page-subtitle" id="page-subtitle">Real-time dwell anomaly detection, route baselines, and root-cause intelligence</p>
+        </div>
+        <div class="header-right">
+          <div class="stat-pill" id="stat-pill-total">
+            <span class="stat-lbl">Active Parcels</span>
+            <span class="stat-num" id="hdr-total-count">0</span>
+          </div>
+          <div class="stat-pill alert-pill" id="stat-pill-flagged">
+            <span class="stat-lbl">Exceptions Flagged</span>
+            <span class="stat-num" id="hdr-flagged-count">0</span>
+          </div>
+          <div class="stat-pill success-pill" id="stat-pill-normal">
+            <span class="stat-lbl">Nominal Flow</span>
+            <span class="stat-num" id="hdr-normal-count">0</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- TAB 1: LIVE BOARD -->
+      <section class="tab-pane active" id="pane-live-board" role="tabpanel" aria-labelledby="tab-btn-live-board">
+        <!-- Top Operational KPI Row -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">Tracked Consignments</span>
+              <div class="metric-icon-box blue">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                  <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+              </div>
+            </div>
+            <div class="metric-value" id="card-total-shipments">0</div>
+            <div class="metric-trend" id="card-total-trend">Across 6 primary corridors</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">Flagged Exceptions</span>
+              <div class="metric-icon-box rose">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+              </div>
+            </div>
+            <div class="metric-value text-rose" id="card-flagged-shipments">0</div>
+            <div class="metric-trend text-rose" id="card-flagged-pct">Statistical threshold: z ≥ 2.0σ</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">Max Dwell Anomaly</span>
+              <div class="metric-icon-box amber">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+            </div>
+            <div class="metric-value text-amber" id="card-max-zscore">0.0σ</div>
+            <div class="metric-trend" id="card-max-zscore-hub">No active alerts</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">At-Risk Cargo Exposure</span>
+              <div class="metric-icon-box emerald">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <line x1="12" y1="1" x2="12" y2="23"></line>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="metric-value" id="card-at-risk-value">₹0</div>
+            <div class="metric-trend" id="card-investigated-ratio">0 of 0 evaluated</div>
+          </div>
+        </div>
+
+        <!-- Geographic India Network Topology Map -->
+        <div class="dashboard-panel map-panel">
+          <div class="panel-header">
+            <div class="panel-title-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+                <line x1="8" y1="2" x2="8" y2="18"></line>
+                <line x1="16" y1="6" x2="16" y2="22"></line>
+              </svg>
+              <h2>India Freight Network & Dynamic Hub Corridors</h2>
+            </div>
+            <div class="map-legend">
+              <span class="legend-item"><span class="dot normal"></span> Nominal Corridor</span>
+              <span class="legend-item"><span class="dot flagged"></span> Dwell Anomaly Active</span>
+              <span class="map-tip">Click any hub to filter</span>
+            </div>
+          </div>
+          <div class="map-container" id="network-map-container">
+            <svg id="india-network-svg" class="network-svg" viewBox="0 0 800 620" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Interactive India freight topology map"></svg>
+            <div class="hub-tooltip" id="hub-tooltip" role="tooltip"></div>
+          </div>
+        </div>
+
+        <!-- Telemetry Data Table Section with Scannable Filters -->
+        <div class="dashboard-panel table-panel">
+          <div class="panel-header table-header-flex">
+            <div class="panel-title-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+              </svg>
+              <h2>Live Shipment Stream & Baseline Telemetry</h2>
+            </div>
+
+            <!-- Corridor Filter Quick Pills -->
+            <div class="table-filters">
+              <div class="search-wrap">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="shipment-search-input" placeholder="Search ID, route, station..." aria-label="Search shipments">
+              </div>
+
+              <select class="filter-select" id="filter-status-select" aria-label="Filter by status">
+                <option value="all">All Operational Statuses</option>
+                <option value="flagged">Flagged Exceptions Only</option>
+                <option value="normal">Nominal Shipments Only</option>
+              </select>
+
+              <select class="filter-select" id="filter-hub-select" aria-label="Filter by hub">
+                <option value="all">All Hub Stations</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Corridor Route Chips -->
+          <div class="corridor-pills-row" id="corridor-pills-row">
+            <button class="corridor-pill active" data-route="all">All Corridors</button>
+            <button class="corridor-pill" data-route="Delhi-Mumbai">Delhi-Mumbai</button>
+            <button class="corridor-pill" data-route="Delhi-Bengaluru">Delhi-Bengaluru</button>
+            <button class="corridor-pill" data-route="Mumbai-Chennai">Mumbai-Chennai</button>
+            <button class="corridor-pill" data-route="Delhi-Kolkata">Delhi-Kolkata</button>
+            <button class="corridor-pill" data-route="Mumbai-Bengaluru">Mumbai-Bengaluru</button>
+            <button class="corridor-pill" data-route="Hyderabad-Delhi">Hyderabad-Delhi</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table" id="shipments-table" aria-label="Shipments table">
+              <thead>
+                <tr>
+                  <th scope="col">Consignment</th>
+                  <th scope="col">Corridor & Progress</th>
+                  <th scope="col">Current Station</th>
+                  <th scope="col">Dwell vs Baseline</th>
+                  <th scope="col">Anomaly (z-score)</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Priority</th>
+                  <th scope="col">Diagnosis State</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody id="shipments-table-body">
+                <!-- Rows injected dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: INVESTIGATE STUDIO -->
+      <section class="tab-pane" id="pane-investigate" role="tabpanel" aria-labelledby="tab-btn-investigate">
+        <div class="investigate-grid">
+          <!-- Left Column: Shipment Dossier & Trigger -->
+          <div class="dashboard-panel dossier-panel">
+            <div class="panel-header">
+              <div class="panel-title-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+                <h2>Consignment Dossier</h2>
+              </div>
+            </div>
+
+            <div class="dossier-selector-wrap">
+              <label for="investigate-shipment-select">Target Consignment for Root-Cause Analysis:</label>
+              <select id="investigate-shipment-select" class="form-select" aria-label="Select shipment to investigate"></select>
+            </div>
+
+            <div class="dossier-details" id="dossier-details">
+              <div class="empty-hint">Select a consignment to view operational metrics</div>
+            </div>
+
+            <div class="investigate-actions">
+              <button class="btn btn-primary btn-large" id="btn-run-investigation">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <span>Dispatch Autonomous Investigation</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Column: Agent Reasoning, Evidence, & Diagnosis -->
+          <div class="dashboard-panel results-panel">
+            <div class="panel-header">
+              <div class="panel-title-wrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                <h2>ReAct Agent Intelligence & Evidence Trace</h2>
+              </div>
+              <div id="investigation-engine-tag" class="engine-tag-badge">Engine: Ready</div>
+            </div>
+
+            <!-- Agent Tool Dispatch Timeline -->
+            <div class="investigation-timeline-wrap" id="investigation-timeline-wrap" aria-label="Tool dispatch progress">
+              <div class="timeline-step" id="step-tool-weather">
+                <div class="step-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 1 0 4 14.9"></path>
+                    <path d="M16 14v6"></path>
+                    <path d="M8 14v6"></path>
+                    <path d="M12 16v6"></path>
+                  </svg>
+                </div>
+                <div class="step-content">
+                  <div class="step-title">Meteorological Telemetry</div>
+                  <div class="step-desc" id="trace-weather-desc">Awaiting execution...</div>
+                </div>
+              </div>
+
+              <div class="timeline-step" id="step-tool-compliance">
+                <div class="step-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <path d="m9 15 2 2 4-4"></path>
+                  </svg>
+                </div>
+                <div class="step-content">
+                  <div class="step-title">E-Way Bill & Compliance</div>
+                  <div class="step-desc" id="trace-compliance-desc">Awaiting execution...</div>
+                </div>
+              </div>
+
+              <div class="timeline-step" id="step-tool-congestion">
+                <div class="step-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M16 12h-4"></path>
+                    <path d="M12 16V8"></path>
+                  </svg>
+                </div>
+                <div class="step-content">
+                  <div class="step-title">Hub Yard Congestion</div>
+                  <div class="step-desc" id="trace-congestion-desc">Awaiting execution...</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Gathered Evidence Cards Grid -->
+            <div class="evidence-grid" id="evidence-grid">
+              <!-- Dynamically populated evidence cards -->
+            </div>
+
+            <!-- Structured Diagnosis Container -->
+            <div class="diagnosis-box" id="diagnosis-box">
+              <div class="empty-state-diag">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  <line x1="11" y1="8" x2="11" y2="14"></line>
+                  <line x1="8" y1="11" x2="14" y2="11"></line>
+                </svg>
+                <p>Dispatch the autonomous investigation agent to run live tool lookups, calculate deterministic confidence, and generate an actionable mitigation plan.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: EVALUATION LAB -->
+      <section class="tab-pane" id="pane-evaluation" role="tabpanel" aria-labelledby="tab-btn-evaluation">
+        <div class="dashboard-panel">
+          <div class="panel-header">
+            <div class="panel-title-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M10 2v7.31"></path>
+                <path d="M14 9.3V2"></path>
+                <path d="M8.5 2h7"></path>
+                <path d="M14 9.3a6.5 6.5 0 1 1-4 0"></path>
+                <path d="M5.52 16h12.96"></path>
+              </svg>
+              <h2>Agent Precision & Ground-Truth Benchmark Lab</h2>
+            </div>
+            <div class="eval-controls">
+              <label for="eval-count-input">Batch size:</label>
+              <input type="number" id="eval-count-input" min="3" max="10" value="5" class="num-input" aria-label="Batch size for evaluation">
+              <span style="font-size: 0.76rem; color: var(--text-secondary); margin-right: 0.25rem;">(3–10 cohort)</span>
+              <button class="btn btn-primary" id="btn-run-eval">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <span>Execute Benchmark</span>
+              </button>
+            </div>
+          </div>
+
+          <p class="panel-caption">
+            Runs the full end-to-end detection and agent reasoning loop against synthetic consignments with hidden ground-truth causes.
+            Validates whether the agent reliably discriminates real causes from noise under standardized seeds.
+          </p>
+
+          <div class="eval-summary-cards" id="eval-summary-cards">
+            <div class="eval-kpi-card">
+              <div class="eval-kpi-title">Top-1 Accuracy</div>
+              <div class="eval-kpi-val" id="eval-accuracy-val">—</div>
+              <div class="eval-kpi-sub" id="eval-accuracy-sub">Run benchmark to compute</div>
+            </div>
+            <div class="eval-kpi-card">
+              <div class="eval-kpi-title">Flagged for Review</div>
+              <div class="eval-kpi-val" id="eval-flagged-val">—</div>
+              <div class="eval-kpi-sub" id="eval-flagged-sub">Out of simulated cohort</div>
+            </div>
+            <div class="eval-kpi-card">
+              <div class="eval-kpi-title">Inference Engine</div>
+              <div class="eval-kpi-val text-sm" id="eval-engine-val">—</div>
+              <div class="eval-kpi-sub">Standardized seed (7)</div>
+            </div>
+          </div>
+
+          <div class="table-responsive" style="margin-top: 1.5rem;">
+            <table class="data-table" id="eval-results-table">
+              <thead>
+                <tr>
+                  <th scope="col">Consignment</th>
+                  <th scope="col">Hidden Ground Truth</th>
+                  <th scope="col">Predicted Cause</th>
+                  <th scope="col">Outcome</th>
+                  <th scope="col">Confidence</th>
+                  <th scope="col">Inference Engine</th>
+                </tr>
+              </thead>
+              <tbody id="eval-results-tbody">
+                <tr>
+                  <td colspan="6" class="text-center">Click "Execute Benchmark" to run the evaluation harness.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: AUDIT TRAIL -->
+      <section class="tab-pane" id="pane-audit" role="tabpanel" aria-labelledby="tab-btn-audit">
+        <div class="dashboard-panel">
+          <div class="panel-header">
+            <div class="panel-title-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <polyline points="9 12 11 14 15 10"></polyline>
+              </svg>
+              <h2>Investigation Audit Trail (SQLite Local Store)</h2>
+            </div>
+            <div class="audit-actions">
+              <button class="btn btn-secondary" id="btn-refresh-audit">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <polyline points="1 20 1 14 7 14"></polyline>
+                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+                <span>Refresh Trail</span>
+              </button>
+              <button class="btn btn-secondary text-rose" id="btn-clear-audit">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                <span>Purge Records</span>
+              </button>
+            </div>
+          </div>
+
+          <p class="panel-caption">
+            Tamper-evident record of all agent decisions. Captures exact tool evidence, confidence calculations,
+            SLA breach estimates, and reasoning traces for regulatory and corporate governance.
+          </p>
+
+          <div class="table-responsive">
+            <table class="data-table" id="audit-table">
+              <thead>
+                <tr>
+                  <th scope="col">Timestamp (UTC)</th>
+                  <th scope="col">Consignment</th>
+                  <th scope="col">Corridor</th>
+                  <th scope="col">Hub Station</th>
+                  <th scope="col">Primary Vector</th>
+                  <th scope="col">Confidence</th>
+                  <th scope="col">SLA Risk</th>
+                  <th scope="col">Engine</th>
+                  <th scope="col">Detail</th>
+                </tr>
+              </thead>
+              <tbody id="audit-table-body">
+                <!-- Injected dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: ARCHITECTURE & SYSTEM GUIDE -->
+      <section class="tab-pane" id="pane-about" role="tabpanel" aria-labelledby="tab-btn-about">
+        <div class="dashboard-panel about-panel">
+          <div class="about-hero">
+            <div class="hero-badge">Enterprise Control Tower Architecture</div>
+            <h2>BharatFlow AI — Shipment Exception & Root-Cause Intelligence</h2>
+            <p class="hero-summary">
+              An auditable, zero-cost, decision-support system built for Indian freight corridors.
+              Combines deterministic statistical anomaly filters with autonomous ReAct tool-calling agent reasoning.
+            </p>
+          </div>
+
+          <div class="about-grid">
+            <div class="about-card">
+              <div class="about-card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+              </div>
+              <h3>1. Statistics in the Hot Path</h3>
+              <p>
+                Exception detection uses rigorous statistical z-scores (<code>dwell_zscore ≥ 2.0σ</code>) against historical
+                hub and transit baselines. No expensive or slow LLM is in the high-frequency telemetry loop—only flagged
+                exceptions trigger agent investigation.
+              </p>
+            </div>
+
+            <div class="about-card">
+              <div class="about-card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                  <polyline points="2 17 12 22 22 17"></polyline>
+                  <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+              </div>
+              <h3>2. ReAct Agent Tool Dispatch</h3>
+              <p>
+                The agent dynamically queries specialized tools: live Open-Meteo weather API calls for the hub city,
+                customs/e-way bill status lookups, and hub congestion telemetry before concluding.
+              </p>
+            </div>
+
+            <div class="about-card">
+              <div class="about-card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="m9 12 2 2 4-4"></path>
+                </svg>
+              </div>
+              <h3>3. Deterministic Confidence Scoring</h3>
+              <p>
+                Confidence and SLA breach risk percentages are computed by explicit, inspectable mathematical formulas
+                in <code>scoring.py</code> rather than hallucinations from an LLM. The LLM provides plain-language reasoning,
+                not arbitrary numbers.
+              </p>
+            </div>
+
+            <div class="about-card">
+              <div class="about-card-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+              </div>
+              <h3>4. Robust Zero-Crash Fallback</h3>
+              <p>
+                If API keys are absent, rate-limited, or network fails, the system executes an identical deterministic
+                rule-based fallback. The mission-critical operations dashboard never crashes or blocks operator workflows.
+              </p>
+            </div>
+          </div>
+
+          <div class="stack-table-wrap">
+            <h3>Zero-Cost Infrastructure Stack</h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th scope="col">Layer</th>
+                  <th scope="col">Technology Choice</th>
+                  <th scope="col">Cost & Availability</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Agent LLM Reasoning</strong></td>
+                  <td>Groq API (Qwen 3.8 / Llama open-weight series)</td>
+                  <td>Free-tier API, sub-second inference</td>
+                </tr>
+                <tr>
+                  <td><strong>Live Meteorological Feed</strong></td>
+                  <td>Open-Meteo REST API</td>
+                  <td>Free, no API key required</td>
+                </tr>
+                <tr>
+                  <td><strong>Corridor Anomaly Detection</strong></td>
+                  <td>Deterministic Gaussian Dwell/Transit Z-Score</td>
+                  <td>Zero compute cost, 100% deterministic</td>
+                </tr>
+                <tr>
+                  <td><strong>Audit Traceability</strong></td>
+                  <td>Local SQLite append-only log</td>
+                  <td>Zero external database dependency</td>
+                </tr>
+                <tr>
+                  <td><strong>Web Interface</strong></td>
+                  <td>Vanilla HTML5, Modern CSS Tokens, Reactive JS, SVG Icons</td>
+                  <td>Zero bloated JS bundles, instant render</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Detail Inspector Modal -->
+  <div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modal-title">Investigation Payload</h3>
+        <button class="modal-close" id="modal-close-btn" aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <pre class="code-block" id="modal-json"></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Operational Toast Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
